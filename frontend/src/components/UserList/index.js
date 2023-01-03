@@ -5,6 +5,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { format } from 'date-fns'
 import './styles.css'
 
+
 const UserList = () => {
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState([])
@@ -41,7 +42,7 @@ const UserList = () => {
       title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdat',
-      render: (text) => format(new Date(text), 'dd/MM/yyyy  -  HH:mm:ss')
+      render: (text) => format(new Date(text), 'HH:mm:ss  -  dd/MM/yyyy')
     },
     {
       title: 'Updated At',
@@ -54,17 +55,12 @@ const UserList = () => {
       key: 'action',
       render: (record) => {
         return <>
-          <EditOutlined style={{ color: 'blue', marginRight: '25px', fontSize: 18 }} />
+          <EditOutlined onClick={() => (record)} style={{ color: 'blue', marginRight: '25px', fontSize: 18 }} />
           <DeleteOutlined onClick={() => deleteUser(record)} style={{ color: 'red', fontSize: 18 }} />
         </>
       }
     },
-    {
-
-    }
-
   ]
-
 
   const deleteUser = async (record) => {
     Modal.confirm({
@@ -76,7 +72,7 @@ const UserList = () => {
           await api.delete(`/users/${record.id}`)
         } catch (error) {
           console.log(error)
-        }finally{
+        } finally {
           setLoading(false)
           findAllUsers()
         }
@@ -100,7 +96,7 @@ const UserList = () => {
 
   useEffect(() => {
     findAllUsers()
-  }, [])
+  },[])
 
   return (
     <div>

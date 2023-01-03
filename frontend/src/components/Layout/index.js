@@ -38,6 +38,7 @@ const App = () => {
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial', }}>
                     <div style={{ padding: 24, textAlign: 'center', background: colorBgContainer }}>
                         <Routes>
+                            <Route path='/' element={<UserList />} />
                             <Route path='/listusers' element={<UserList />} />
                             <Route path='/newuser' element={<NewUser />} />
                         </Routes>
