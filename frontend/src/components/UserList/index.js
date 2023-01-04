@@ -4,11 +4,13 @@ import api from '../../api'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { format } from 'date-fns'
 import './styles.css'
+import ModalUser from '../ModalUser'
 
 
 const UserList = () => {
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const columns = [
     {
@@ -42,7 +44,7 @@ const UserList = () => {
       title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdat',
-      render: (text) => format(new Date(text), 'HH:mm:ss  -  dd/MM/yyyy')
+      render: (text) => format(new Date(text), 'dd/MM/yyyy  -  HH:mm:ss')
     },
     {
       title: 'Updated At',
@@ -55,7 +57,7 @@ const UserList = () => {
       key: 'action',
       render: (record) => {
         return <>
-          <EditOutlined onClick={() => (record)} style={{ color: 'blue', marginRight: '25px', fontSize: 18 }} />
+          <EditOutlined onClick={() => setIsModalOpen(true)} style={{ color: 'blue', marginRight: '25px', fontSize: 18 }} />
           <DeleteOutlined onClick={() => deleteUser(record)} style={{ color: 'red', fontSize: 18 }} />
         </>
       }
@@ -96,7 +98,7 @@ const UserList = () => {
 
   useEffect(() => {
     findAllUsers()
-  },[])
+  }, [])
 
   return (
     <div>
@@ -111,7 +113,7 @@ const UserList = () => {
         >
         </Table>
       )}
-
+      <ModalUser value={isModalOpen} set={setIsModalOpen} />
     </div>
   )
 }
