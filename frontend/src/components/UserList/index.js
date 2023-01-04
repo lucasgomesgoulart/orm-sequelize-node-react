@@ -11,6 +11,8 @@ const UserList = () => {
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [record, setRecord] = useState({})
+
 
   const columns = [
     {
@@ -57,12 +59,17 @@ const UserList = () => {
       key: 'action',
       render: (record) => {
         return <>
-          <EditOutlined onClick={() => setIsModalOpen(true)} style={{ color: 'blue', marginRight: '25px', fontSize: 18 }} />
+          <EditOutlined onClick={() => openModal(record)} style={{ color: 'blue', marginRight: '25px', fontSize: 18 }} />
           <DeleteOutlined onClick={() => deleteUser(record)} style={{ color: 'red', fontSize: 18 }} />
         </>
       }
     },
   ]
+
+  const openModal = (record) => {
+    setIsModalOpen(true)
+    setRecord(record)
+  }
 
   const deleteUser = async (record) => {
     Modal.confirm({
@@ -113,7 +120,7 @@ const UserList = () => {
         >
         </Table>
       )}
-      <ModalUser value={isModalOpen} set={setIsModalOpen} />
+      <ModalUser value={isModalOpen} set={setIsModalOpen} record={record} findAllUsers={findAllUsers} />
     </div>
   )
 }
