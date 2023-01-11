@@ -1,69 +1,70 @@
-import { React, useState, useRef, useEffect } from 'react'
-import { Button, Form, Input, Modal, } from 'antd';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import api from '../../api'
+import './style.css'
+import Swal from 'sweetalert2'
 
-
-const NewUser = () => {
-
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const regexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-  const inputRef = useRef(null)
-
-  const focusInput = () => {
-    inputRef.current.focus()
-  }
-
-  useEffect(() => {
-    focusInput()
-  }, [])
-
-  const onFinish = async () => {
-    console.log(name.split(' ').length)
-    console.log(regexp.test(email));
-    if (name.split(' ').length >= 2 && regexp.test(email)) {
-      Modal.confirm({
-        title: 'Register?',
-        okText: 'Register',
-        cancelText: 'Cancel',
-        onOk: async () => {
-          try {
-            await api.post('/users', {
-              name: name,
-              email: email,
-              phone: phone,
-              adm_user: false,
-              active: true
-            })
-            setName('')
-            setPhone('')
-            setEmail('')
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      })
-    } else {
-      alert('Ops, something is wrong...')
-    }
-  }
+const NewUser = ({ errors }) => {
   return (
-    <Form onFinish={onFinish} >
-      <Form.Item label='Name' >
-        <Input ref={inputRef} placeholder='Exemple: Jhon Cena' name='name' onChange={(e) => { setName(e.target.value) }} value={name} />
-      </Form.Item>
-      <Form.Item label='Email' >
-        <Input placeholder='Exemple: jhon@example.com' name='email' onChange={(e) => { setEmail(e.target.value) }} value={email} />
-      </Form.Item>
+    <Formik
+      initialValues={{ name: '', email: '', phone: '' }}
+      validationSchema={Yup.object({
+        name: Yup.string().required('Required'),
+        email: Yup.string().email('Invalid email address').required('Required'),
+        phone: Yup.string().required('Required').min(8, 'Min 8 numbers').max(14, 'Max 14 numbers'),
+      })}
 
-      <Form.Item label='Phone'>
-        <Input placeholder='Exemple: 12345678911' name='phone' onChange={(e) => { setPhone(e.target.value) }} value={phone} />
-      </Form.Item>
+      onSubmit={async (values, { setSubmitting, resetForm, }) => {
+        try {
+          await api.post('/users', {
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+            adm_user: false,
+            active: true,
+          })
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          resetForm({})
+          setSubmitting(false)
 
-      <Button type='primary' htmlType='submit'>Submit</Button>
-    </Form >
-  )
-}
+        } catch (error) {
+          console.log(error)
+        }
+      }}>
+      {({ isSubmitting, errors }) => (
+        <Form className='form'>
 
-export default NewUser
+          <div className='input-box'>
+            <label htmlFor='name'>Name</label>
+            <Field type="text" name="name" className={errors.ErrorMessage ? 'error-message' : ''} />
+            <ErrorMessage name="name" component="div" style={{ color: 'red', fontSize: '18px', marginLeft: '20px' }} />
+          </div>
+
+          <div className='input-box'>
+            <label htmlFor='email'>Email</label>
+            <Field type="email" name="email" className={errors.ErrorMessage ? 'error-message' : ''} />
+            <ErrorMessage name="email" component="div" style={{ color: 'red', fontSize: '18px', marginLeft: '20px' }} />
+          </div>
+
+          <div className='input-box'>
+            <label htmlFor='name'>Phone</label>
+            <Field type="text" name="phone" className={errors.ErrorMessage ? 'error-message' : ''} />
+            <ErrorMessage name="phone" component="div" style={{ color: 'red', fontSize: '18px', marginLeft: '20px' }} />
+          </div>
+
+          <div className='buttonDiv'>
+            <button type="submit" disabled={isSubmitting}>Submit</button>
+          </div>
+        </Form>
+      )}
+    </Formik >
+  );
+};
+
+export default NewUser;

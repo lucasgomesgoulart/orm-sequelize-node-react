@@ -31,6 +31,7 @@ function ModalUser({ value, set, record, findAllUsers }) {
 
     const handleForm = async (id) => {
         try {
+
             await api.put(`/users/${id}`, {
                 name: inputName,
                 email: inputEmail,

@@ -5,6 +5,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { format } from 'date-fns'
 import './styles.css'
 import ModalUser from '../ModalUser'
+import Swal from 'sweetalert2'
 
 
 const UserList = () => {
@@ -13,6 +14,18 @@ const UserList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [record, setRecord] = useState({})
 
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   const columns = [
     {
@@ -73,15 +86,21 @@ const UserList = () => {
 
   const deleteUser = async (record) => {
     Modal.confirm({
-      title: 'Are you sure you want to delete it?',
+      title: 'This action is irreversible',
+      content: `Are you sure you want to delete the user: ${record.name}`,
       okText: 'Yes',
       cancelText: 'No',
+      width: 500,
       onOk: async () => {
         try {
           await api.delete(`/users/${record.id}`)
         } catch (error) {
           console.log(error)
         } finally {
+          Toast.fire({
+            icon: 'success',
+            title: `${record.name}, delted!`
+          })
           setLoading(false)
           findAllUsers()
         }
