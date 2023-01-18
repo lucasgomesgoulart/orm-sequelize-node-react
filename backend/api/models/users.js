@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
 
     static associate(models) {
-      // define association here
+      this.belongsTo(models.Admins,{foreignKey:'admin_id'});
     }
   }
   Users.init({
