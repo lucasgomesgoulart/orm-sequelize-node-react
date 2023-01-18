@@ -13,7 +13,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          isEmail: true
+        }
       },
       phone: {
         type: Sequelize.INTEGER
@@ -31,6 +34,14 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      admin_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Admins',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       }
     });
   },
