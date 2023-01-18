@@ -11,7 +11,7 @@ const NewUser = ({ errors }) => {
       validationSchema={Yup.object({
         name: Yup.string().required('Required'),
         email: Yup.string().email('Invalid email address').required('Required'),
-        phone: Yup.string().required('Required').min(8, 'Min 8 numbers').max(14, 'Max 14 numbers'),
+        phone: Yup.string().required('Required').min(8, 'Min 8 numbers')
       })}
 
       onSubmit={async (values, { setSubmitting, resetForm, }) => {
@@ -26,7 +26,7 @@ const NewUser = ({ errors }) => {
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: 'Your work has been saved',
+            title: 'User has been saved',
             showConfirmButton: false,
             timer: 1500
           })
