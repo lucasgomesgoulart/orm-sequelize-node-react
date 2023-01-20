@@ -20,6 +20,7 @@ const telaLogin = ({ errors }) => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
+
                     await api.post('/register', {
                         admin_username: values.username,
                         admin_password: values.password,
