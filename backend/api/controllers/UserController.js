@@ -1,9 +1,10 @@
 const db = require('../models')
+const UserService = require('../services/userService')
 
 class UserController {
     static async findAllUsers(req, res) {
         try {
-            const allUsers = await db.Users.findAll()
+            const allUsers = await UserService.findAllUsers();
             return res.status(200).json(allUsers)
         } catch (error) {
             console.error(error)
@@ -14,7 +15,7 @@ class UserController {
     static async findOneUser(req, res) {
         const { id } = req.params
         try {
-            const userFound = await db.Users.findOne({ where: { id } })
+            const userFound = await UserService.findOneUser(id)
             if (!userFound) {
                 return res.status(404).json({ message: 'User not found' })
             }
@@ -28,7 +29,7 @@ class UserController {
     static async createUser(req, res) {
         const userToCreate = req.body
         try {
-            const newUser = await db.Users.create(userToCreate)
+            const newUser = await UserService.createUser(userToCreate)
             return res.status(201).json({
                 message: 'User created successfully',
                 data: newUser
@@ -42,12 +43,9 @@ class UserController {
     static async updateUser(req, res) {
         const { id } = req.params
         const userToUpdate = req.body
+
         try {
-            const userFound = await db.Users.findOne({ where: { id } })
-            if (!userFound) {
-                return res.status(404).json({ message: 'User not found' })
-            }
-            const updatedUser = await db.Users.update(userToUpdate, { where: { id } })
+            const updatedUser = await UserService.updateUser(id, userToUpdate)
             return res.status(200).json({
                 message: 'User updated successfully',
                 data: updatedUser
