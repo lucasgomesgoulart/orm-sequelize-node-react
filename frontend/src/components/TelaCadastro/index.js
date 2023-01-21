@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik, } from 'formik'
 import React from 'react'
 import * as Yup from 'yup';
 import api from '../../api';
-
+const Swal = require('sweetalert2')
 
 const initialValues = { username: '', email: '', password: '', confirmPassword: '', phone: '', }
 const validationSchema = Yup.object({
@@ -30,6 +30,22 @@ const telaLogin = ({ errors }) => {
                             console.log(response)
                             if (response.status === 201) {
                                 console.log(response.data)
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Signed in successfully'
+                                })
                                 resetForm({})
                                 setSubmitting(false)
                                 return
