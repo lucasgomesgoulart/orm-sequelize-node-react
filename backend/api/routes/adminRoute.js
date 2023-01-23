@@ -4,7 +4,7 @@ const AdminController = require('../controllers/AdminController')
 const router = Router()
 
 router.post('/register', AdminController.createAdmin)
-router.get('/getadmin/:id', AdminController.findOneAdmin)
+router.get('/getadmin/:id', validateToken, AdminController.findOneAdmin)
 router.post('/login', AdminController.login)
 // router.post('/users', AdminController.createUser)
 // router.put('/users/:id', UserController.updateUser)
