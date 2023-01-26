@@ -95,11 +95,10 @@ const UserList = () => {
         try {
           await api.delete(`/users/${record.id}`)
         } catch (error) {
-          console.log(error)
         } finally {
           Toast.fire({
             icon: 'success',
-            title: `${record.name}, delted!`
+            title: `${record.name}, deleted!`
           })
           setLoading(false)
           findAllUsers()
@@ -109,14 +108,19 @@ const UserList = () => {
   }
 
 
-  const findAllUsers = async () => {
+  const findAllUsers = async (req) => {
     try {
       setLoading(true)
       const response = await api.get(`/users`)
       setDataSource(response.data)
-      console.log(dataSource)
+      // console.log(dataSource)
     } catch (error) {
-      console.log(error)
+      if (error.request.status === 401) {
+        Toast.fire({
+          icon: 'error',
+          title: `Please login first`
+        })
+      }
     } finally {
       setLoading(false)
     }

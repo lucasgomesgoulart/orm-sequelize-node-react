@@ -1,10 +1,12 @@
 import { ErrorMessage, Field, Form, Formik, } from 'formik'
-import React from 'react'
+import React, { useNavigate } from 'react'
 import * as Yup from 'yup';
 import api from '../../api';
 const Swal = require('sweetalert2')
 
+
 const initialValues = { username: '', email: '', password: '', confirmPassword: '', phone: '', }
+
 const validationSchema = Yup.object({
     username: Yup.string().required('Required').min(6, 'Username must be 6 characteres'),
     email: Yup.string().email('Invalid email address').required('Required'),
@@ -12,7 +14,21 @@ const validationSchema = Yup.object({
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
 })
 
+
 const telaLogin = ({ errors }) => {
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
 
     return (
         <div className='container' >
@@ -30,18 +46,6 @@ const telaLogin = ({ errors }) => {
                             console.log(response)
                             if (response.status === 201) {
                                 console.log(response.data)
-                                const Toast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    didOpen: (toast) => {
-                                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                    }
-                                })
-
                                 Toast.fire({
                                     icon: 'success',
                                     title: 'Signed in successfully'

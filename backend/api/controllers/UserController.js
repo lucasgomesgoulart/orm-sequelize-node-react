@@ -2,9 +2,12 @@ const db = require('../models')
 const UserService = require('../services/userService')
 
 class UserController {
+
+
     static async findAllUsers(req, res) {
+
         try {
-            const allUsers = await UserService.findAllUsers();
+            const allUsers = await UserService.findAllUsers(req.admin);
             return res.status(200).json(allUsers)
         } catch (error) {
             console.error(error)
@@ -27,7 +30,11 @@ class UserController {
     }
 
     static async createUser(req, res) {
-        const userToCreate = req.body
+        const userToCreate = { ...req.body, admin_id: req.admin }
+        const admin_id = req.admin
+
+        userToCreate.admin_id = admin_id
+        console.log({ userToCreate })
         try {
             const newUser = await UserService.createUser(userToCreate)
             return res.status(201).json({
@@ -51,10 +58,12 @@ class UserController {
                 data: updatedUser
             })
         } catch (error) {
-            console.error(error)
-            return res.status(500).json({ message: error.message })
+            if (error.message === "Invalid phone number") return res.status(422).json({ message: error.message });
+            if (error.message === "User not found") return res.status(404).json({ message: error.message });
+            return res.status(500).json({ message: error.message });
         }
     }
+
 
     static async deleteUser(req, res) {
         const { id } = req.params
