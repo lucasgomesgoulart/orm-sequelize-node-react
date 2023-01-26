@@ -31,7 +31,7 @@ class AdminController {
         const {admin_username, admin_password} = req.body
         try{
             const userLogged = await AdminService.login(admin_username, admin_password)
-            console.log(userLogged)
+            // console.log(userLogged)
             return res.status(200).json({userLogged})
         }catch(err){
             return res.status(500).json({ message: err.message })
