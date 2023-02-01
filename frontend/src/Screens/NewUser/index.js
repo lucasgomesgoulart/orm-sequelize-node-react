@@ -59,18 +59,18 @@ const NewUser = ({ errors }) => {
             <div className='form-container'>
               <div className='input-box'>
                 <Field type="text" placeholder='Name' name="name" className='inputForm' />
-                <ErrorMessage name="name" component="div" style={{ color: 'red', fontSize: '15px',}} />
+                <ErrorMessage name="name" component="div" style={{ color: 'red', fontSize: '15px', }} />
               </div>
               <div className='input-box'>
                 <Field type="email" placeholder='Email' name="email" className='inputForm' />
-                <ErrorMessage name="email" component="div" style={{ color: 'red', fontSize: '15px'}} />
+                <ErrorMessage name="email" component="div" style={{ color: 'red', fontSize: '15px' }} />
               </div>
               <div className='input-box'>
-                <Field type="text" placeholder='Phone' name="phone" className='inputForm'/>
+                <Field type="text" placeholder='Phone' name="phone" className='inputForm' />
                 <ErrorMessage name="phone" component="div" style={{ color: 'red', fontSize: '15px', }} />
               </div>
               <div className='buttonDiv'>
-                <button type="submit" disabled={isSubmitting} className='button'>Submit</button>
+                <button className='buttonSubimt' type="submit" disabled={isSubmitting} >Submit</button>
               </div>
             </div>
           </Form>
