@@ -106,7 +106,7 @@ const App = () => {
                             <Route path='/login' element={<TelaLogin />} />
                             <Route path='/listusers' element={<UserList />} />
                             <Route path='/newuser' element={<NewUser />} />
-                            <Route path='/telaCadastro' element={<TelaCadastro />} />
+                            <Route path='/TelaCadastro' element={<TelaCadastro />} />
                         </Routes>
                     </div>
                 </Content>
