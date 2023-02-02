@@ -71,6 +71,7 @@ const TelaLogin = () => {
                             style={{
                                 cursor: 'pointer',
                                 paddingTop: '15px'
+                                
                             }}
                             onClick={() => { navigate('/TelaCadastro') }}
                         >

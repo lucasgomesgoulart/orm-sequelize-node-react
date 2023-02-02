@@ -1,5 +1,6 @@
 import { ErrorMessage, Field, Form, Formik, } from 'formik'
-import React, { useNavigate } from 'react'
+import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import api from '../../api';
@@ -13,36 +14,39 @@ const validationSchema = Yup.object({
     password: Yup.string().required('Please provide a valid password').min(8, 'Password is too short - should be 8 chars minimum.').matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
 })
-// const navigate = useNavigate()
 
-const telaLogin = ({ errors }) => {
+
+const TelaCadastro = ({ errors }) => {
+
+    const navigate = useNavigate()
+
     return (
         <>
-            <h2 className='form-title'>Criar Conta</h2>
+            <h2 className='form-title'>Create Account</h2>
             <div className='container' >
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
-                        
+
                         await api.post('/register', {
                             admin_username: values.username,
                             admin_password: values.password,
                             admin_email: values.email,
                         })
-                        .then(response => {
-                            console.log(response)
-                            if (response.status === 201) {
-                                toast.success(<div>Conta criada com sucesso</div>)
-                                
-                                // console.log(response.data)
-                                resetForm({})
-                                setSubmitting(false)
-                                
-                                return
-                            }
-                        })
-                        .catch(error => {
+                            .then(response => {
+                                console.log(response)
+                                if (response.status === 201) {
+                                    toast.success(<div>Conta criada com sucesso</div>)
+
+                                    // console.log(response.data)
+                                    resetForm({})
+                                    setSubmitting(false)
+                                    navigate('/login')
+                                    return
+                                }
+                            })
+                            .catch(error => {
                                 console.log(error.response)
                                 if (error.response.status === 500) {
                                     toast.error(<div>Username already registred</div>, {
@@ -63,8 +67,8 @@ const telaLogin = ({ errors }) => {
                                 }
                                 setSubmitting(false)
                             })
-                        }}
-                        >
+                    }}
+                >
                     {({ isSubmitting, errors }) => (
                         <Form className='form'>
                             <div className='form-icon'>
@@ -125,4 +129,4 @@ const telaLogin = ({ errors }) => {
     )
 }
 
-export default telaLogin
+export default TelaCadastro
