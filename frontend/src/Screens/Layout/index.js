@@ -36,11 +36,11 @@ const items = [
 
 const App = () => {
     const { authenticated, setAuthenticated } = useContext(Context)
-
+    // const danger = authenticated !== true;
     const navigate = useNavigate()
-
     const [tokenLogin, setTokenLogin] = useState(false)
-
+    const isAuthenticated = authenticated === true;
+    const danger = !isAuthenticated;
     const validate = () => {
         const token = (localStorage.getItem('token'));
         if (token) {
@@ -67,34 +67,51 @@ const App = () => {
     const { token: { colorBgContainer }, } = theme.useToken();
     return (
         <Layout hasSider >
-            <Sider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0, width: '250px'}}>
-                <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)', }} />
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['/login']}>
-                    {authenticated == false ? <Menu.Item key='/login' icon={<UserOutlined />}>
-                        <Link to='/login'>Login</Link>
-                    </Menu.Item> : null}
+            <Sider style={{
+                overflow: 'auto',
+                height: '100vh',
+                position: 'fixed',
+                left: 0, top: 0,
+                bottom: 0,
+                width: '250px'
+            }}>
+                <div
+                    style={{
+                        height: 32,
+                        margin: 16,
+                        background: 'rgba(255, 255, 255, 0.2)',
+                    }} />
 
+                <Menu
+                    theme="dark"
+                    mode="inline"
+                    defaultSelectedKeys={['/login']}
+                >
+                    {isAuthenticated ? null : (
+                        <Menu.Item key="/login" icon={<UserOutlined />}>
+                            <Link to="/login">Login</Link>
+                        </Menu.Item>
+                    )}
                     <Menu.SubMenu key={items[1].key} title={items[1].label} icon={items[1].icon}>
-                        {items[1].children && items[1].children.map(child => (
-                            <Menu.Item key={child.key} icon={child.icon}>
-                                <Link to={child.key}>{child.label}</Link>
-                            </Menu.Item>
-                        ))}
+                        {items[1].children &&
+                            items[1].children.map((child) => (
+                                <Menu.Item key={child.key} icon={child.icon} danger={danger}>
+                                    <Link to={child.key}>{child.label}</Link>
+                                </Menu.Item>
+                            ))}
                     </Menu.SubMenu>
-
-                    {authenticated === true ?
-                        <Menu.Item key='/logout' icon={<LogoutOutlined />} onClick={handleLogin} style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <Link to='/logout'>Logout</Link>
-                        </Menu.Item>
-                        :
-                        <Menu.Item key='/TelaCadastro' icon={<UserOutlined />} style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <Link to='/TelaCadastro'>Don't have account</Link>
-                        </Menu.Item>
-                    }
-
-
-
-
+                    <Menu.Item
+                        key="/logout"
+                        icon={<LogoutOutlined />}
+                        onClick={handleLogin}
+                        style={{ position: 'absolute', bottom: 0, right: 0 }}
+                    >
+                        {isAuthenticated ? (
+                            <Link to="/logout">Logout</Link>
+                        ) : (
+                            <Link to="/TelaCadastro">Don't have account</Link>
+                        )}
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200, }}>
@@ -110,7 +127,7 @@ const App = () => {
                         </Routes>
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center', height: '15px'}}>
+                <Footer style={{ textAlign: 'center', height: '15px' }}>
                     Lucas Goulart @2022
                 </Footer>
             </Layout>
