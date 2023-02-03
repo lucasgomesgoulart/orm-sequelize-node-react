@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.42eaa44b.css",
+    "main.js": "/static/js/main.a42b4579.js",
+    "static/media/logo-circular.png": "/static/media/logo-circular.ea7a9d745b50ec29ed64.png",
+    "index.html": "/index.html",
+    "main.42eaa44b.css.map": "/static/css/main.42eaa44b.css.map",
+    "main.a42b4579.js.map": "/static/js/main.a42b4579.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.42eaa44b.css",
+    "static/js/main.a42b4579.js"
+  ]
+}
