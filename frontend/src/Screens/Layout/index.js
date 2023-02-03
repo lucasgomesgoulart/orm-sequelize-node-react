@@ -91,10 +91,6 @@ const App = () => {
                             <Link to='/TelaCadastro'>Don't have account</Link>
                         </Menu.Item>
                     }
-
-
-
-
                 </Menu>
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200, }}>
