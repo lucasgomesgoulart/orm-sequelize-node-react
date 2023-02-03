@@ -1,13 +1,4 @@
-const express = require('express')
-const routes = require('./routes')
+const express = require('@vendia/serverless-express')
 require("dotenv").config();
-const app = express()
-
-const port = 3000
-routes(app)
-
-app.listen(port, () => {
-    console.log(`Servidor: ON, na porta ${port}`)
-})
-
-module.exports = app
+const app = require('./routes')
+module.exports = express({ app })
