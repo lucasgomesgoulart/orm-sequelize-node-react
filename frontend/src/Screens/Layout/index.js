@@ -116,18 +116,7 @@ const App = () => {
                             <Link to='/TelaCadastro'>Don't have account</Link>
                         </Menu.Item>
                     }
-                    <Menu.Item
-                        key="/logout"
-                        icon={<LogoutOutlined />}
-                        onClick={handleLogin}
-                        style={{ position: 'absolute', bottom: 0, right: 0 }}
-                    >
-                        {isAuthenticated ? (
-                            <Link to="/logout">Logout</Link>
-                        ) : (
-                            <Link to="/TelaCadastro">Don't have account</Link>
-                        )}
-                    </Menu.Item>
+                
                 </Menu>
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200, }}>

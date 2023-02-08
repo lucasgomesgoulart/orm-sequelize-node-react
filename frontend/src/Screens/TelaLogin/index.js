@@ -15,7 +15,7 @@ const TelaLogin = () => {
 
     const { authenticated, setAuthenticated } = useContext(Context)
 
-    console.log({ authenticated })
+    // console.log({ authenticated })
 
     const alertUser = () => {
         toast.warning('Functionality temporarily unavailable')

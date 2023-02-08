@@ -48,8 +48,7 @@ class AdminController {
         try {
             res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             res.setHeader('Content-Disposition', `attachment; filename = reportUsers.xlsx`)
-            console.log(typeof report)
-            return res.status(200).send(report);
+            return res.status(200).send(Buffer.from(report, 'binary'));
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
