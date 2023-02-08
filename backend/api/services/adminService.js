@@ -57,20 +57,13 @@ class AdminSerivce {
                     }
                 }
             })
-            // console.log(data)
-            const dataValues = data.map(d=>d.dataValues)
-            // console.log(dataValues)
-
-            const workbook = xlsx.utils.book_new()
-            const workSheet = xlsx.utils.json_to_sheet(dataValues)
-
-            xlsx.utils.book_append_sheet(workbook, workSheet, 'Sheet1')
-            xlsx.writeFile(workbook, 'reportUsers.xlsx')
-
-            const buffer = xlsx.write(workbook, { type: 'buffer' })
-            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            return blob
-
+            const dataValues = data.map(d => d.dataValues)
+            const fields = Object.keys(dataValues[0]);
+            const ws = xlsx.utils.json_to_sheet(dataValues, { header: fields });
+            const workbook = xlsx.utils.book_new();
+            xlsx.utils.book_append_sheet(workbook, ws, "Report");
+            const buffer = xlsx.write(workbook, { type: 'array', bookType: 'xlsx' });
+            return buffer;
         } catch (error) {
             throw error
         }

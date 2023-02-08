@@ -34,7 +34,7 @@ class UserController {
         const admin_id = req.admin
 
         userToCreate.admin_id = admin_id
-        console.log({ userToCreate })
+        // console.log({ userToCreate })
         try {
             const newUser = await UserService.createUser(userToCreate)
             return res.status(201).json({
