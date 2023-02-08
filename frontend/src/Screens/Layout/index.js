@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TeamOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { TeamOutlined, UserOutlined, LogoutOutlined, BarChartOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import UserList from '../UserList';
 import NewUser from '../NewUser';
@@ -8,6 +8,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import TelaLogin from '../TelaLogin'
 import TelaCadastro from '../TelaCadastro'
 import { Context } from '../../components/Context/AuthContext'
+import Reports from '../../Screens/Reports'
 
 const { Header, Content, Footer, Sider } = Layout;
 const items = [
@@ -30,6 +31,11 @@ const items = [
                 key: '/listusers',
                 icon: <UserOutlined />,
             },
+            {
+                label: "Reports",
+                key: '/reports',
+                icon: <BarChartOutlined />
+            }
         ]
     }
 ]
@@ -100,6 +106,16 @@ const App = () => {
                                 </Menu.Item>
                             ))}
                     </Menu.SubMenu>
+
+                    {authenticated === true ?
+                        <Menu.Item key='/logout' icon={<LogoutOutlined />} onClick={handleLogin} style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <Link to='/logout'>Logout</Link>
+                        </Menu.Item>
+                        :
+                        <Menu.Item key='/TelaCadastro' icon={<UserOutlined />} style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <Link to='/TelaCadastro'>Don't have account</Link>
+                        </Menu.Item>
+                    }
                     <Menu.Item
                         key="/logout"
                         icon={<LogoutOutlined />}
@@ -124,6 +140,7 @@ const App = () => {
                             <Route path='/listusers' element={<UserList />} />
                             <Route path='/newuser' element={<NewUser />} />
                             <Route path='/TelaCadastro' element={<TelaCadastro />} />
+                            <Route path='/reports' element={<Reports/>} />
                         </Routes>
                     </div>
                 </Content>

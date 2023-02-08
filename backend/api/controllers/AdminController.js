@@ -1,4 +1,5 @@
 const AdminService = require('../services/adminService');
+const fs = require('fs')
 
 class AdminController {
     static async createAdmin(req, res) {
@@ -28,13 +29,29 @@ class AdminController {
     }
 
     static async login(req, res) {
-        const {admin_username, admin_password} = req.body
-        try{
+        const { admin_username, admin_password } = req.body
+        try {
             const userLogged = await AdminService.login(admin_username, admin_password)
             // console.log(userLogged)
-            return res.status(200).json({userLogged})
-        }catch(err){
+            return res.status(200).json({ userLogged })
+        } catch (err) {
             return res.status(500).json({ message: err.message })
+        }
+    }
+
+    static async getReport(req, res) {
+        const admin_id = req.admin
+        const initialDate = req.body.initialDate
+        const finalDate = req.body.finalDate
+
+        const report = await AdminService.getReport(admin_id, initialDate, finalDate)
+        try {
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            res.setHeader('Content-Disposition', `attachment; filename = reportUsers.xlsx`)
+            console.log(typeof report)
+            return res.status(200).send(report);
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
         }
     }
 }
