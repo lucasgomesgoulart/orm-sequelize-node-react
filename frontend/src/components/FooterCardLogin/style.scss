@@ -1,0 +1,20 @@
+.box-button-icons {
+    display: flex;
+
+    button {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        justify-content: space-evenly;
+        margin-top: 20px;
+        width: 350px;
+        padding: 10px;
+        background-color: #1677ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+}

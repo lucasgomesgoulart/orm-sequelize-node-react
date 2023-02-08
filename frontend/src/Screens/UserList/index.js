@@ -7,12 +7,12 @@ import './styles.css'
 import ModalUser from '../ModalUser'
 import Swal from 'sweetalert2'
 
-
 const UserList = () => {
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [record, setRecord] = useState({})
+  const [filterInput, setFilterInput] = useState('')
 
 
   const Toast = Swal.mixin({
@@ -79,6 +79,8 @@ const UserList = () => {
     },
   ]
 
+
+
   const openModal = (record) => {
     setIsModalOpen(true)
     setRecord(record)
@@ -98,7 +100,7 @@ const UserList = () => {
         } finally {
           Toast.fire({
             icon: 'success',
-            title: `${record.name}, deleted!`
+            title: `${record.name} deleted!`
           })
           setLoading(false)
           findAllUsers()
@@ -106,7 +108,6 @@ const UserList = () => {
       }
     })
   }
-
 
   const findAllUsers = async (req) => {
     try {
@@ -130,8 +131,25 @@ const UserList = () => {
     findAllUsers()
   }, [])
 
+
   return (
     <div>
+      <input
+        style={{
+          display: 'flex',
+          padding: '5px',
+          borderRadius: '5px',
+          border: '1px solid',
+          outline: 'none',
+        }}
+        placeholder='Find user by name'
+        value={filterInput}
+        onChange={(e) => {
+          const text = e.target.value
+          setFilterInput(text)
+          setDataSource(text ? dataSource.filter(item => item.name.includes(text)) : findAllUsers())
+        }}
+      />
       {loading ? (
         <Spin size='large' />
       ) : (

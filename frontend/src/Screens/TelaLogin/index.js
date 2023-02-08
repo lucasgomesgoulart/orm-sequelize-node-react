@@ -7,16 +7,19 @@ import { Context } from '../../components/Context/AuthContext'
 import logo from './assets/logo-circular.png';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import FooterCardLogin from '../../components/FooterCardLogin';
 
 const TelaLogin = () => {
-
-
 
     const navigate = useNavigate()
 
     const { authenticated, setAuthenticated } = useContext(Context)
 
     console.log({ authenticated })
+
+    const alertUser = () => {
+        toast.warning('Functionality temporarily unavailable')
+    }
 
     return (
         <Formik className='form-login'
@@ -39,7 +42,7 @@ const TelaLogin = () => {
                     resetForm();
                     toast.error(<div>Wrong username or password</div>, {
                         position: "top-right",
-                        autoClose: 5000,
+                        autoClose: 2500,
                         hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
@@ -60,12 +63,22 @@ const TelaLogin = () => {
                         <Field type="password" placeholder="Password" name="admin_password" className='inputForm' />
                     </div>
                     <div>
-                        <button type='submit'>Login</button>
+                        <button type='submit' className='buttonSubimt'>Login</button>
                     </div>
 
                     <div>
-                        <p>Create a account</p>
+                        <p
+                            style={{
+                                cursor: 'pointer',
+                                paddingTop: '15px'
+                                
+                            }}
+                            onClick={() => { navigate('/TelaCadastro') }}
+                        >
+                            Create a account
+                        </p>
                     </div>
+                    <FooterCardLogin alertUser={alertUser} />
                 </Form>
             </div >
         </Formik >

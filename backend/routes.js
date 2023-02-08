@@ -9,6 +9,7 @@ const router = Router()
 router.post('/register', AdminController.createAdmin)
 router.get('/getadmin/:id', authMiddleware, AdminController.findOneAdmin)
 router.post('/login', AdminController.login)
+router.post('/getreport', authMiddleware, AdminController.getReport)
 
 // Rota de usuário
 router.get('/users', authMiddleware, UserController.findAllUsers)
