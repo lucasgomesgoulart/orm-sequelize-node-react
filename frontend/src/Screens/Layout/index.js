@@ -100,15 +100,6 @@ const App = () => {
                                 </Menu.Item>
                             ))}
                     </Menu.SubMenu>
-                    {authenticated === true ?
-                        <Menu.Item key='/logout' icon={<LogoutOutlined />} onClick={handleLogin} style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <Link to='/logout'>Logout</Link>
-                        </Menu.Item>
-                        :
-                        <Menu.Item key='/TelaCadastro' icon={<UserOutlined />} style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <Link to='/TelaCadastro'>Don't have account</Link>
-                        </Menu.Item>
-                    }
                     <Menu.Item
                         key="/logout"
                         icon={<LogoutOutlined />}
