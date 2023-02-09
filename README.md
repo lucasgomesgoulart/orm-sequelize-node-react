@@ -35,8 +35,6 @@
 `npm install`    
 `npm start -> y para rodar na porta 3001 `  
 
-
-Contribuição
 Contribuições são sempre bem-vindas!  
 Crie sua nova feature ou corrija algum bug.  
 Envie um pull request.  
