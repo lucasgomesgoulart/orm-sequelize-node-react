@@ -20,6 +20,10 @@
 
 ```git clone https://github.com/lucasgomesgoulart/orm-sequelize-node-react.git```  
 
+### Antes de tudo, vá na pasta como mostra a imagem e altere a senha do root.
+![image](https://user-images.githubusercontent.com/102271931/217820585-96fb5f6e-d181-4ab0-8680-eec57ce33da4.png)
+
+
 ## BACKEND  
 **Navegue até a pasta do projeto:**  
 `cd orm-sequelize-node-react`  
