@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './style.scss'
 import api from '../../api'
@@ -12,10 +12,7 @@ import FooterCardLogin from '../../components/FooterCardLogin';
 const TelaLogin = () => {
 
     const navigate = useNavigate()
-
-    const { authenticated, setAuthenticated } = useContext(Context)
-
-    // console.log({ authenticated })
+    const { authenticated, setAuthenticated, admin_id, setAdmin_id } = useContext(Context)
 
     const alertUser = () => {
         toast.warning('Functionality temporarily unavailable')
@@ -32,7 +29,8 @@ const TelaLogin = () => {
                     });
                     if (response.status === 200) {
                         localStorage.setItem('token', response.data.userLogged.token);
-                        navigate('/listusers');
+                        localStorage.setItem('admin_id', response.data.userLogged.admin_id);
+                        // navigate('/home');
                         setAuthenticated(true);
                         toast.success("Logged in Successfully!");
                         resetForm();
@@ -53,6 +51,8 @@ const TelaLogin = () => {
                 }
             }}
         >
+
+
             <div className='container-login'>
 
                 <Form className='formm'>
@@ -71,7 +71,7 @@ const TelaLogin = () => {
                             style={{
                                 cursor: 'pointer',
                                 paddingTop: '15px'
-                                
+
                             }}
                             onClick={() => { navigate('/TelaCadastro') }}
                         >

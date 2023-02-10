@@ -16,7 +16,7 @@ const NewUser = ({ errors }) => {
         validationSchema={Yup.object({
           name: Yup.string().required('Required'),
           email: Yup.string().email('Invalid email address').required('Required'),
-          phone: Yup.string().required('Required').min(8, 'Min 8 numbers').max(10, 'Max 10 numbers')
+          phone: Yup.string().required('Required')
         })}
 
         onSubmit={async (values, { setSubmitting, resetForm, }) => {

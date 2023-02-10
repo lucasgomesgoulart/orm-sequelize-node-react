@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TeamOutlined, UserOutlined, LogoutOutlined, BarChartOutlined } from '@ant-design/icons';
+import { TeamOutlined, UserOutlined, LogoutOutlined, BarChartOutlined, HomeOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import UserList from '../UserList';
 import NewUser from '../NewUser';
@@ -9,6 +9,7 @@ import TelaLogin from '../TelaLogin'
 import TelaCadastro from '../TelaCadastro'
 import { Context } from '../../components/Context/AuthContext'
 import Reports from '../../Screens/Reports'
+import Home from '../MainScreen/'
 
 const { Header, Content, Footer, Sider } = Layout;
 const items = [
@@ -21,6 +22,11 @@ const items = [
         key: 'administration',
         icon: <UserOutlined />,
         children: [
+            {
+                label: 'Home',
+                key: 'home',
+                icon: <HomeOutlined />
+            },
             {
                 label: "Register user",
                 key: '/newuser',
@@ -66,8 +72,10 @@ const App = () => {
 
     const handleLogin = () => {
         localStorage.removeItem('token')
+        localStorage.removeItem('admin_id')
         setAuthenticated(false)
         navigate('/login')
+
     }
 
     const { token: { colorBgContainer }, } = theme.useToken();
@@ -98,25 +106,38 @@ const App = () => {
                             <Link to="/login">Login</Link>
                         </Menu.Item>
                     )}
-                    <Menu.SubMenu key={items[1].key} title={items[1].label} icon={items[1].icon}>
+                    <Menu.SubMenu
+                        key={items[1].key}
+                        title={items[1].label}
+                        icon={items[1].icon}>
                         {items[1].children &&
                             items[1].children.map((child) => (
-                                <Menu.Item key={child.key} icon={child.icon} danger={danger}>
-                                    <Link to={child.key}>{child.label}</Link>
+                                <Menu.Item
+                                    key={child.key}
+                                    icon={child.icon}
+                                    danger={danger}>
+                                    <Link to={child.key}> {child.label} </Link>
                                 </Menu.Item>
                             ))}
                     </Menu.SubMenu>
 
                     {authenticated === true ?
-                        <Menu.Item key='/logout' icon={<LogoutOutlined />} onClick={handleLogin} style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <Link to='/logout'>Logout</Link>
+                        <Menu.Item
+                            key='/logout'
+                            icon={<LogoutOutlined />}
+                            onClick={handleLogin}
+                            style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <Link to='/logout'> Logout </Link>
                         </Menu.Item>
                         :
-                        <Menu.Item key='/TelaCadastro' icon={<UserOutlined />} style={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <Link to='/TelaCadastro'>Don't have account</Link>
+                        <Menu.Item
+                            key='/TelaCadastro'
+                            icon={<UserOutlined />}
+                            style={{ position: 'absolute', bottom: 0, right: 0 }}>
+                            <Link to='/TelaCadastro'> Don't have account </Link>
                         </Menu.Item>
                     }
-                
+
                 </Menu>
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200, }}>
@@ -129,7 +150,8 @@ const App = () => {
                             <Route path='/listusers' element={<UserList />} />
                             <Route path='/newuser' element={<NewUser />} />
                             <Route path='/TelaCadastro' element={<TelaCadastro />} />
-                            <Route path='/reports' element={<Reports/>} />
+                            <Route path='/reports' element={<Reports />} />
+                            <Route path='/home' element={<Home />} />
                         </Routes>
                     </div>
                 </Content>

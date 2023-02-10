@@ -146,6 +146,7 @@ const UserList = () => {
         value={filterInput}
         onChange={(e) => {
           const text = e.target.value
+          console.log(filterInput)
           setFilterInput(text)
           setDataSource(text ? dataSource.filter(item => item.name.includes(text)) : findAllUsers())
         }}
