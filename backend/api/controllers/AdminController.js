@@ -32,7 +32,7 @@ class AdminController {
         const { admin_username, admin_password } = req.body
         try {
             const userLogged = await AdminService.login(admin_username, admin_password)
-            // console.log(userLogged)
+            console.log(userLogged)
             return res.status(200).json({ userLogged })
         } catch (err) {
             return res.status(500).json({ message: err.message })
@@ -46,9 +46,9 @@ class AdminController {
 
         const report = await AdminService.getReport(admin_id, initialDate, finalDate)
         try {
-            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            res.setHeader('Content-Disposition', `attachment; filename = reportUsers.xlsx`)
-            return res.status(200).send(Buffer.from(report, 'binary'));
+            res.setHeader('Content-Type', 'text/csv');
+            res.setHeader('Content-Disposition', `attachment; filename=report.csv`);
+            res.status(200).send(report);
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }

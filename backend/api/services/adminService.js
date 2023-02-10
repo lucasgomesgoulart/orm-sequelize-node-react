@@ -46,28 +46,33 @@ class AdminSerivce {
             throw error;
         }
     }
-
     static async getReport(admin_id, initialDate, finalDate) {
-        try {
-            const data = await db.Users.findAll({
-                where: {
-                    admin_id,
-                    createdAt: {
-                        [Op.between]: [initialDate, finalDate]
-                    }
+        const data = await db.Users.findAll({
+            where: {
+                admin_id,
+                createdAt: {
+                    [Op.between]: [initialDate, finalDate]
                 }
-            })
-            const dataValues = data.map(d => d.dataValues)
-            const fields = Object.keys(dataValues[0]);
-            const ws = xlsx.utils.json_to_sheet(dataValues, { header: fields });
-            const workbook = xlsx.utils.book_new();
-            xlsx.utils.book_append_sheet(workbook, ws, "Report");
-            const buffer = xlsx.write(workbook, { type: 'array', bookType: 'xlsx' });
-            return buffer;
-        } catch (error) {
-            throw error
-        }
-    }
+            }
+        });
+        const dataValues = data.map(d => d.dataValues);
+        const fields = Object.keys(dataValues[0]);
+        let csv = fields.join(",") + "\n";
+        dataValues.forEach(row => {
+            fields.forEach((field, index) => {
+                csv += row[field];
+                if (index < fields.length - 1) {
+                    csv += ",";
+                }
+            });
+            csv += "\n";
+        });
+        fs.writeFile("report.csv", csv, err => {
+            if (err) throw err;
+            console.log("The file has been saved!");
+        });
+    };
 }
+
 
 module.exports = AdminSerivce;

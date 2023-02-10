@@ -2,7 +2,6 @@ import api from "../../api";
 import { DatePicker, Space } from 'antd';
 import { useState } from "react";
 import { Spin } from 'antd';
-import * as xlsx from 'xlsx'
 
 const Reports = () => {
     const { RangePicker } = DatePicker;
@@ -17,11 +16,11 @@ const Reports = () => {
             initialDate,
             finalDate
         });
-        const excelBuffer = response.data.report;
-        const blob = new Blob([new Uint8Array(excelBuffer)], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        const csv = response.data.report;
+        const blob = new Blob([csv], { type: "text/csv" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = "report.xlsx";
+        link.download = "report.csv";
         link.click();
         setLoading(false);
     };
@@ -41,21 +40,6 @@ const Reports = () => {
         </div>
     );
 
-
-    return (
-        <div>
-            <h1>Reports</h1>
-            <Space direction="vertical" size={12}>
-                <RangePicker onChange={(dates) => {
-                    setInitalDate(dates[0]);
-                    setFinalDate(dates[1]);
-                }} />
-            </Space>
-            {loading ? <Spin size="large" /> : (
-                <button onClick={downloadReport}>Download report</button>
-            )}
-        </div>
-    );
-};
+}
 
 export default Reports;

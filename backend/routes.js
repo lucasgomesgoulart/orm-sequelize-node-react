@@ -7,7 +7,7 @@ const router = Router()
 
 // Rota de ADM
 router.post('/register', AdminController.createAdmin)
-router.get('/getadmin/:id', authMiddleware, AdminController.findOneAdmin)
+router.get('/getAdmin/:id', authMiddleware, AdminController.findOneAdmin)
 router.post('/login', AdminController.login)
 router.post('/getreport', authMiddleware, AdminController.getReport)
 
