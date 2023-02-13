@@ -60,18 +60,21 @@ class AdminSerivce {
         let csv = fields.join(",") + "\n";
         dataValues.forEach(row => {
             fields.forEach((field, index) => {
-                csv += row[field];
+                let value = row[field];
+                if (typeof value === 'string') {
+                    value = `"${value}"`;
+                }
+                csv += value;
                 if (index < fields.length - 1) {
                     csv += ",";
                 }
             });
             csv += "\n";
         });
-        fs.writeFile("report.csv", csv, err => {
-            if (err) throw err;
-            console.log("The file has been saved!");
-        });
+
+        return csv;
     };
+
 }
 
 

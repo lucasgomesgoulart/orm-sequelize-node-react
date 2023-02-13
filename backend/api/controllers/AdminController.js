@@ -44,8 +44,9 @@ class AdminController {
         const initialDate = req.body.initialDate
         const finalDate = req.body.finalDate
 
-        const report = await AdminService.getReport(admin_id, initialDate, finalDate)
         try {
+            const report = await AdminService.getReport(admin_id, initialDate, finalDate)
+
             res.setHeader('Content-Type', 'text/csv');
             res.setHeader('Content-Disposition', `attachment; filename=report.csv`);
             res.status(200).send(report);

@@ -66,22 +66,19 @@ class UserController {
 
 
     static async deleteUser(req, res) {
-        const { id } = req.params
+        const { id } = req.params;
         try {
-            const userFound = await db.Users.findOne({ where: { id } })
-            if (!userFound) {
-                return res.status(404).json({ message: 'User not found' })
-            }
-            const userToDelete = await db.Users.destroy({ where: { id } })
+            const deletedUser = await UserService.deleteUser(id);
             return res.status(200).json({
                 message: 'User deleted successfully',
-                data: userToDelete
-            })
+                data: deletedUser
+            });
         } catch (error) {
-            console.error(error)
-            return res.status(500).json({ message: error.message })
+            console.error(error);
+            return res.status(500).json({ message: error.message });
         }
     }
+
 }
 
 module.exports = UserController

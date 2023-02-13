@@ -10,20 +10,28 @@ const Reports = () => {
     const [finalDate, setFinalDate] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const downloadReport = async () => {
+    const downloadReport = () => {
         setLoading(true);
-        const response = await api.post('/getreport', {
-            initialDate,
-            finalDate
+        api.post('/getreport', {
+          initialDate,
+          finalDate
+        })
+        .then(response => {
+          const csv = response.data;
+          console.log(response.data)
+          const blob = new Blob([csv], { type: "text/csv" });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = "report.csv";
+          link.click();
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error(error);
+          setLoading(false);
         });
-        const csv = response.data.report;
-        const blob = new Blob([csv], { type: "text/csv" });
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = "report.csv";
-        link.click();
-        setLoading(false);
-    };
+      };
+      
 
     return (
         <div>

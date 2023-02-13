@@ -1,11 +1,11 @@
 const db = require('../models')
 
 class UserService {
-    
+
     static async createUser(userToCreate) {
         console.log(`teste service userToCreate:${userToCreate}`)
         try {
-            const newUser = await db.Users.create( userToCreate )
+            const newUser = await db.Users.create(userToCreate)
             return newUser;
         } catch (error) {
             throw error;
@@ -38,7 +38,7 @@ class UserService {
 
     static async updateUser(id, userToUpdate) {
         if (!userToUpdate || !id) return { message: "User not found" }
-        if(userToUpdate.phone.length < 10) return { message: "Invalid phone number" }
+        if (userToUpdate.phone.length < 10) return { message: "Invalid phone number" }
         try {
             const userFound = await db.Users.findByPk(id)
             if (!userFound) {
@@ -56,7 +56,7 @@ class UserService {
         if (!id) throw new Error;
 
         try {
-            const userFound = await db.Users.findOne(id)
+            const userFound = await db.Users.findByPk(id)
             if (!userFound) {
                 throw new Error('User not found');
             }

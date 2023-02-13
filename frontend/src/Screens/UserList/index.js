@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Table, Spin, Modal } from 'antd'
 import api from '../../api'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
@@ -6,8 +6,12 @@ import { format } from 'date-fns'
 import './styles.css'
 import ModalUser from '../ModalUser'
 import Swal from 'sweetalert2'
+import { Context } from '../../components/Context/AuthContext'
+
 
 const UserList = () => {
+  const { countUsersDeleted, setCountUsersDeleted } = useContext(Context)
+  console.log(countUsersDeleted)
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -103,6 +107,7 @@ const UserList = () => {
             title: `${record.name} deleted!`
           })
           setLoading(false)
+          setCountUsersDeleted(countUsersDeleted + 1)
           findAllUsers()
         }
       }
