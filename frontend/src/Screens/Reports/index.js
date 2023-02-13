@@ -19,7 +19,7 @@ const Reports = () => {
     if(!authenticated){
       navigate('/unauthorizaded')
     }
-  }, [authenticated])
+  }, [])
   
 
   const downloadReport = () => {

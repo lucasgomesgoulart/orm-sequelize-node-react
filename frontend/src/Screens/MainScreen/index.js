@@ -12,10 +12,12 @@ const MainScreen = () => {
     const [loading, setLoading] = useState(false)
     const [infoUser, setInfoUser] = useState({})
     const [lastUser, setLastUser] = useState(null)
+    const [deletedUser, setDeletedUser] = useState(null)
 
     useEffect(() => {
         getDataUser()
         getUsersInfo()
+        getCountDeletedUsers()
     }, [])
 
     const getDataUser = async () => {
@@ -40,7 +42,14 @@ const MainScreen = () => {
         }
     }
 
-
+    async function getCountDeletedUsers(){
+        try {
+            const response = await api.get(`/getCountDeletedUsers`)
+            setDeletedUser(response.data.countUsersDeleted)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     return (
@@ -59,8 +68,10 @@ const MainScreen = () => {
                         display: 'flex',
                         justifyContent: 'space-around',
                     }}>
-                        <CardDash CardTitle={infoUser ? `Total registered users: ${infoUser}` : 'Sem informação de usuários'} />
-                        <CardDash CardTitle={lastUser ? `Total deleted users: ${countUsersDeleted}` : 'Loading...'} />
+                        <CardDash CardTitle={infoUser ? `Total registered users: ${infoUser}` : 'Sem informação de usuários'}>
+                            <p>teste</p>
+                        </CardDash>
+                        <CardDash CardTitle={lastUser ? `Total deleted users: ${deletedUser}` : 'Nothing here...'} />
                         <CardDash CardTitle={lastUser ? `Last user registred: ${lastUser.name}` : 'Loading...'} />
                     </div>
                 </> : navigate('/unauthorizaded')}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd'
 
-const CardDash = ({ CardTitle }) => {
+const CardDash = ({ CardTitle, children }) => {
     return (
         <div>
             <Card
@@ -13,7 +13,9 @@ const CardDash = ({ CardTitle }) => {
                     height: '55px',
                     backgroundColor: '#001529'
                 }}
-            />
+            >
+                
+            </Card>
         </div>
     );
 };
