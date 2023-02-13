@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import api from '../../api'
 import CardDash from '../../components/Card';
 import { Context } from '../../components/Context/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const MainScreen = () => {
 
@@ -17,12 +17,6 @@ const MainScreen = () => {
         getDataUser()
         getUsersInfo()
     }, [])
-
-    if (!authenticated) {
-        navigate('/Unauthorizaded')
-    }
-
-
 
     const getDataUser = async () => {
         const admin_id = localStorage.getItem('admin_id')
@@ -51,7 +45,7 @@ const MainScreen = () => {
 
     return (
         <>
-            {authenticated && (
+            {authenticated ?
                 <>
                     <h1 style={{
                         fontSize: '30px',
@@ -69,8 +63,7 @@ const MainScreen = () => {
                         <CardDash CardTitle={lastUser ? `Total deleted users: ${countUsersDeleted}` : 'Loading...'} />
                         <CardDash CardTitle={lastUser ? `Last user registred: ${lastUser.name}` : 'Loading...'} />
                     </div>
-                </>
-            )}
+                </> : navigate('/unauthorizaded')}
         </>
     );
 };

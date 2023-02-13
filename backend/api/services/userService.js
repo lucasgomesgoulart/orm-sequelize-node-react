@@ -3,7 +3,6 @@ const db = require('../models')
 class UserService {
 
     static async createUser(userToCreate) {
-        console.log(`teste service userToCreate:${userToCreate}`)
         try {
             const newUser = await db.Users.create(userToCreate)
             return newUser;
@@ -54,14 +53,13 @@ class UserService {
     static async deleteUser(id) {
 
         if (!id) throw new Error;
-
         try {
             const userFound = await db.Users.findByPk(id)
             if (!userFound) {
                 throw new Error('User not found');
             }
             const deletedUser = await db.Users.destroy({ where: { id } })
-            return deletedUser;
+            return {deletedUser,userFound};
         } catch (error) {
             throw error;
         }

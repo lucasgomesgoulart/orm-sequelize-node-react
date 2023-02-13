@@ -3,10 +3,21 @@ import * as Yup from 'yup';
 import api from '../../api'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Context } from '../../components/Context/AuthContext'
+import { useContext, useEffect } from 'react';
+import Unauthorized from '../Unauthorizaded';
 
 const NewUser = ({ errors }) => {
 
+  const { authenticated } = useContext(Context)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!authenticated) {
+      navigate('/unauthorizaded')
+    }
+  }, [])
+
 
   return (
     <>
@@ -28,7 +39,7 @@ const NewUser = ({ errors }) => {
               adm_user: false,
               active: true,
             })
-           navigate('/listusers')
+            navigate('/listusers')
             resetForm({})
             setSubmitting(false)
 

@@ -32,11 +32,14 @@ class UserController {
     static async createUser(req, res) {
         const userToCreate = { ...req.body, admin_id: req.admin }
         const admin_id = req.admin
-
         userToCreate.admin_id = admin_id
-        // console.log({ userToCreate })
+
         try {
             const newUser = await UserService.createUser(userToCreate)
+            await db.Logs.create({
+                description: `Create user: ${newUser.name}`,
+                admin_id: req.admin
+            })
             return res.status(201).json({
                 message: 'User created successfully',
                 data: newUser
@@ -50,9 +53,12 @@ class UserController {
     static async updateUser(req, res) {
         const { id } = req.params
         const userToUpdate = req.body
-
         try {
             const updatedUser = await UserService.updateUser(id, userToUpdate)
+            await db.Logs.create({
+                description: `Updated user: ${userToUpdate.name}`,
+                admin_id: req.admin
+            })
             return res.status(200).json({
                 message: 'User updated successfully',
                 data: updatedUser
@@ -68,7 +74,14 @@ class UserController {
     static async deleteUser(req, res) {
         const { id } = req.params;
         try {
-            const deletedUser = await UserService.deleteUser(id);
+            const result = await UserService.deleteUser(id)
+            const deletedUser = result.deletedUser
+            const userFoundName = result.userFound.name
+            
+            await db.Logs.create({
+                description: `Delete user: ${userFoundName}`,
+                admin_id: req.admin
+            })
             return res.status(200).json({
                 message: 'User deleted successfully',
                 data: deletedUser

@@ -14,7 +14,6 @@ api.interceptors.request.use(async (config) => {
     } catch (e) {
         console.log(e)
     }
-    console.log({config})
     return config;
     
 })
