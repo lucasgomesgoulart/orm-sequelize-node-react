@@ -37,6 +37,7 @@ class AdminSerivce {
             }
             if (await bcrypt.compare(admin_password, adminFound.admin_password)) {
                 const token = jwt.sign({ admin_id: adminFound.id }, process.env.JWT_SECRET);
+                
                 return { admin_id: adminFound.id, token };
             } else {
                 throw new Error('Wrong password');

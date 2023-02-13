@@ -1,5 +1,5 @@
 const AdminService = require('../services/adminService');
-const fs = require('fs')
+const db = require('../models')
 
 class AdminController {
     static async createAdmin(req, res) {
@@ -7,7 +7,9 @@ class AdminController {
 
         try {
             const newAdmin = await AdminService.createAdmin(admiToCreate)
-            console.log(newAdmin)
+            await db.Logs.create({
+                description: `Admin created: ${newAdmin.admin_username}`
+            })
             return res.status(201).json({
                 message: 'Admin created successfully',
                 data: newAdmin
@@ -32,7 +34,10 @@ class AdminController {
         const { admin_username, admin_password } = req.body
         try {
             const userLogged = await AdminService.login(admin_username, admin_password)
-            console.log(userLogged)
+            await db.Logs.create({
+                description: `User logged in as: ${admin_username}`,
+                admin_id: userLogged.admin_id
+            })
             return res.status(200).json({ userLogged })
         } catch (err) {
             return res.status(500).json({ message: err.message })

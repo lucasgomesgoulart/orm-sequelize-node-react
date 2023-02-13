@@ -7,35 +7,30 @@ const UnauthorizedPage = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100vh',
+            height: '80vh',
             flexDirection: 'column'
         }}>
-            <h1 style={{
-                fontSize: '50px',
-                color: 'red'
-            }}
-            >
+            <h1 style={{ fontSize: '50px', color: '#ff4c4f' }}>
                 Unauthorized
             </h1>
-            <h2 style={{
-                fontSize: '30px',
-                color: 'gray',
-                marginBottom: '30px'
-            }}
-            >
+            <h2 style={{ fontSize: '30px', color: 'gray', marginBottom: '30px' }}>
                 You are not authorized to access this page
             </h2>
             <Link to='/login' style={{
-                backgroundColor: 'blue',
+                marginTop: '20px',
+                width: '350px',
+                padding: '10px',
+                backgroundColor: '#1677ff',
                 color: 'white',
-                padding: '10px 20px',
+                border: 'none',
                 borderRadius: '5px',
-                textDecoration: 'none'
-            }}
-            >
+                fontSize: '18px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease-in-out',
+            }}>
                 Login
             </Link>
-        </div>
+        </div >
     );
 };
 

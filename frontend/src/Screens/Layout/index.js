@@ -10,6 +10,7 @@ import TelaCadastro from '../TelaCadastro'
 import { Context } from '../../components/Context/AuthContext'
 import Reports from '../../Screens/Reports'
 import Home from '../MainScreen/'
+import Unauthorizaded from '../Unauthorizaded'
 
 const { Header, Content, Footer, Sider } = Layout;
 const items = [
@@ -152,6 +153,7 @@ const App = () => {
                             <Route path='/TelaCadastro' element={<TelaCadastro />} />
                             <Route path='/reports' element={<Reports />} />
                             <Route path='/home' element={<Home />} />
+                            <Route path='/unauthorizaded' element={<Unauthorizaded/>} />
                         </Routes>
                     </div>
                 </Content>

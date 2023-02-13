@@ -11,7 +11,6 @@ import { Context } from '../../components/Context/AuthContext'
 
 const UserList = () => {
   const { countUsersDeleted, setCountUsersDeleted } = useContext(Context)
-  console.log(countUsersDeleted)
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -151,7 +150,6 @@ const UserList = () => {
         value={filterInput}
         onChange={(e) => {
           const text = e.target.value
-          console.log(filterInput)
           setFilterInput(text)
           setDataSource(text ? dataSource.filter(item => item.name.includes(text)) : findAllUsers())
         }}

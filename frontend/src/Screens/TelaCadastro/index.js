@@ -35,10 +35,8 @@ const TelaCadastro = ({ errors }) => {
                             admin_email: values.email,
                         })
                             .then(response => {
-                                console.log(response)
                                 if (response.status === 201) {
                                     toast.success(<div>Conta criada com sucesso</div>)
-
                                     // console.log(response.data)
                                     resetForm({})
                                     setSubmitting(false)
