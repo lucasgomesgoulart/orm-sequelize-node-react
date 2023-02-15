@@ -10,7 +10,7 @@ router.post('/register', AdminController.createAdmin)
 router.get('/getAdmin/:id', authMiddleware, AdminController.findOneAdmin)
 router.post('/login', AdminController.login)
 router.post('/getreport', authMiddleware, AdminController.getReport)
-
+router.get('/getCountDeletedUsers', authMiddleware, AdminController.getCountDeletedUsers)
 
 // Rota de usuário
 router.get('/users', authMiddleware, UserController.findAllUsers)

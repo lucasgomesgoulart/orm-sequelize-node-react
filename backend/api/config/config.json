@@ -1,23 +1,17 @@
 {
   "development": {
     "username": "root",
-    "password": "lucas",
-    "database": "projetos_api",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "password": "process.env.DB.PASSWORD",
+    "database": "railway",
+    "host": "containers-us-west-148.railway.app",
+    "dialect": "mysql",
+    "port": 5506
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "password": "process.env.DB.PASSWORD",
+    "database": "railway",
+    "host": "containers-us-west-148.railway.app",
     "dialect": "mysql"
   }
 }

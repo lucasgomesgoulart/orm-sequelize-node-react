@@ -5,9 +5,8 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../components/Context/AuthContext'
 import { useContext, useEffect } from 'react';
-import Unauthorized from '../Unauthorizaded';
 
-const NewUser = ({ errors }) => {
+const NewUser = () => {
 
   const { authenticated } = useContext(Context)
   const navigate = useNavigate()
@@ -21,7 +20,13 @@ const NewUser = ({ errors }) => {
 
   return (
     <>
-      <h2>New user</h2>
+      <h1 style={{
+        fontSize: '30px',
+        paddingBottom: '20px',
+        borderBottom: '1px solid black'
+      }}>
+        Register User
+      </h1>
       <Formik
         initialValues={{ name: '', email: '', phone: '' }}
         validationSchema={Yup.object({
