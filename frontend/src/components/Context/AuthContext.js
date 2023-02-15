@@ -5,11 +5,6 @@ const Context = createContext()
 function AuthProvider({ children }) {
 
     const [authenticated, setAuthenticated] = useState(false)
-    const [countUsersDeleted, setCountUsersDeleted] = useState(JSON.parse(localStorage.getItem("countUsersDeleted")) || 0);
-
-    useEffect(() => {
-        localStorage.setItem("countUsersDeleted", JSON.stringify(countUsersDeleted));
-    }, [countUsersDeleted]);
 
     return (
 
@@ -19,8 +14,6 @@ function AuthProvider({ children }) {
                 value={{
                     authenticated,
                     setAuthenticated,
-                    countUsersDeleted,
-                    setCountUsersDeleted
                 }}>
                 {children}
             </Context.Provider>

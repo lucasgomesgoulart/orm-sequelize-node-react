@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik'
-import React, { useContext, } from 'react'
+import React, { useContext, useState, } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './style.scss'
 import api from '../../api'
@@ -13,7 +13,7 @@ const TelaLogin = () => {
 
     const navigate = useNavigate()
     const { authenticated, setAuthenticated } = useContext(Context)
-
+    const [loading,setLoading] = useState(false)
     const alertUser = () => {
         toast.warning('Functionality temporarily unavailable')
     }
@@ -23,6 +23,7 @@ const TelaLogin = () => {
             initialValues={{ admin_username: '', admin_password: '' }}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
                 try {
+                    setLoading(true)
                     const response = await api.post('/login', {
                         admin_username: values.admin_username,
                         admin_password: values.admin_password,
@@ -34,6 +35,7 @@ const TelaLogin = () => {
                         setAuthenticated(true);
                         toast.success("Logged in Successfully!");
                         resetForm();
+                        setLoading(false)
                     }
                 } catch (err) {
                     console.log(err);
@@ -48,6 +50,7 @@ const TelaLogin = () => {
                         progress: undefined,
                         theme: "colored",
                     });
+                    setLoading(false)
                 }
             }}
         >

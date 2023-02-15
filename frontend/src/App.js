@@ -10,6 +10,7 @@ function App() {
       <AuthProvider>
         <Layout />
       </AuthProvider>
+      
       <ToastContainer 
         position="top-right"
         autoClose={2500}

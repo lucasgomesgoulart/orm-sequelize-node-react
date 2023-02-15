@@ -59,6 +59,16 @@ class AdminController {
             return res.status(500).json({ message: error.message })
         }
     }
+
+    static async getCountDeletedUsers(req, res) {
+        const admin_id = req.admin
+        try {
+            const countUsersDeleted = await AdminService.countUsersDeleted(admin_id)
+            return res.status(200).json({ countUsersDeleted })
+        } catch (error) {
+            return res.status(500).json({ message: error.message })
+        }
+    }
 }
 
 module.exports = AdminController

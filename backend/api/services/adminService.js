@@ -76,6 +76,23 @@ class AdminSerivce {
         return csv;
     };
 
+    static async countUsersDeleted(admin_id){
+        try {
+            const countUsersDeleted = await db.Logs.count({
+                where: {
+                    admin_id,
+                    description:{
+                        [sequelize.Op.like]: "%Delete%"
+                    }
+                }
+            })
+            return countUsersDeleted
+        } catch (error) {
+            console.log(error)
+            throw new Error;
+        }
+    }
+
 }
 
 

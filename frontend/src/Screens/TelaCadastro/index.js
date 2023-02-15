@@ -1,12 +1,20 @@
 import { ErrorMessage, Field, Form, Formik, } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import api from '../../api';
+import { Spin } from 'antd'
 import './styles.scss'
 
-const initialValues = { username: '', email: '', password: '', confirmPassword: '', phone: '', }
+
+const initialValues = {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phone: '',
+}
 
 const validationSchema = Yup.object({
     username: Yup.string().required('Required').min(6, 'Username must be 6 characteres'),
@@ -16,38 +24,36 @@ const validationSchema = Yup.object({
 })
 
 
-const TelaCadastro = ({ errors }) => {
-
-    const navigate = useNavigate()
+const TelaCadastro = () => {
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <>
             <h2 className='form-title'>Create Account</h2>
-            <div className='container' >
+            <div className='container'>
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
-
-                        await api.post('/register', {
-                            admin_username: values.username,
-                            admin_password: values.password,
-                            admin_email: values.email,
-                        })
-                            .then(response => {
-                                if (response.status === 201) {
-                                    toast.success(<div>Conta criada com sucesso</div>)
-                                    // console.log(response.data)
-                                    resetForm({})
-                                    setSubmitting(false)
-                                    navigate('/login')
-                                    return
-                                }
-                            })
-                            .catch(error => {
-                                console.log(error.response)
-                                if (error.response.status === 500) {
-                                    toast.error(<div>Username already registred</div>, {
+                        setLoading(true)
+                        try {
+                            const response = await api.post('/register', {
+                                admin_username: values.username,
+                                admin_password: values.password,
+                                admin_email: values.email,
+                            });
+                            if (response.status === 201) {
+                                toast.success(<div>Account created successfully</div>);
+                                resetForm({});
+                                navigate('/login');
+                            }
+                        } catch (error) {
+                            console.log(error.response);
+                            if (error.response.status === 500) {
+                                toast.error(
+                                    <div>Username already registered</div>,
+                                    {
                                         position: "top-right",
                                         autoClose: 2500,
                                         hideProgressBar: false,
@@ -56,56 +62,40 @@ const TelaCadastro = ({ errors }) => {
                                         draggable: true,
                                         progress: undefined,
                                         theme: "colored",
-                                    });
-                                    resetForm({})
-                                    setSubmitting(false)
-                                    return
-                                } else {
-                                    console.log(error)
-                                }
-                                setSubmitting(false)
-                            })
+                                    }
+                                );
+                            } else {
+                                console.log(error);
+                            }
+                        }
+                        setLoading(false);
+                        setSubmitting(false);
                     }}
                 >
                     {({ isSubmitting, errors }) => (
                         <Form className='form'>
-                            <div className='form-icon'>
-                                <i className='fa fa-user-plus'></i>
-                            </div>
+                            {loading && <Spin />}
                             <div className='form-inputs'>
-                                <Field
-                                    name='username'
-                                    placeholder='Username'
-                                    className='input'
-                                />
+                                <Field name='username' placeholder='Username' className='input' />
                                 <ErrorMessage
                                     name='username'
                                     component='div'
                                     className='error'
-                                    style={{ color: 'red', fontSize: '15px', }}
+                                    style={{ color: 'red', fontSize: '15px' }}
                                 />
-                                <Field
-                                    name='email'
-                                    placeholder='Email'
-                                    className='input'
-                                />
+                                <Field name='email' placeholder='Email' className='input' />
                                 <ErrorMessage
                                     name='email'
                                     component='div'
                                     className='error'
-                                    style={{ color: 'red', fontSize: '15px', }}
+                                    style={{ color: 'red', fontSize: '15px' }}
                                 />
-                                <Field
-                                    name='password'
-                                    placeholder='Password'
-                                    type='password'
-                                    className='input'
-                                />
+                                <Field name='password' placeholder='Password' type='password' className='input' />
                                 <ErrorMessage
                                     name='password'
                                     component='div'
                                     className='error'
-                                    style={{ color: 'red', fontSize: '15px', }}
+                                    style={{ color: 'red', fontSize: '15px' }}
                                 />
                                 <Field
                                     name='confirmPassword'
@@ -122,9 +112,10 @@ const TelaCadastro = ({ errors }) => {
                         </Form>
                     )}
                 </Formik>
-            </div >
+            </div>
         </>
-    )
-}
+    );
+};
+
 
 export default TelaCadastro
