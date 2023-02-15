@@ -1,16 +1,17 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import api from '../../api'
+import { Spin } from 'antd'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../components/Context/AuthContext'
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 const NewUser = () => {
 
   const { authenticated } = useContext(Context)
   const navigate = useNavigate()
-
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     if (!authenticated) {
       navigate('/unauthorizaded')
@@ -37,6 +38,7 @@ const NewUser = () => {
 
         onSubmit={async (values, { setSubmitting, resetForm, }) => {
           try {
+            setLoading(true)
             await api.post('/users', {
               name: values.name,
               email: values.email,
@@ -47,38 +49,48 @@ const NewUser = () => {
             navigate('/listusers')
             resetForm({})
             setSubmitting(false)
-
+            setLoading(false)
+            
           } catch (error) {
             if (error.request.status === 401 || error.request.status === 403) {
               toast.error(<div>You need to login first</div>)
             }
           }
-        }}>
+          setLoading(false)
+        }}
+      >
         {({ isSubmitting, errors }) => (
 
-          <div className='container-login'>
-            <Form className='formm'>
-              <div className='form-container'>
-                <div className='input-box'>
-                  <Field type="text" placeholder='Name' name="name" className='inputForm' />
-                  <ErrorMessage name="name" component="div" style={{ color: 'red', fontSize: '15px', }} />
-                </div>
-                <div className='input-box'>
-                  <Field type="email" placeholder='Email' name="email" className='inputForm' />
-                  <ErrorMessage name="email" component="div" style={{ color: 'red', fontSize: '15px' }} />
-                </div>
-                <div className='input-box'>
-                  <Field type="text" placeholder='Phone' name="phone" className='inputForm' />
-                  <ErrorMessage name="phone" component="div" style={{ color: 'red', fontSize: '15px', }} />
-                </div>
-                <div className='buttonDiv'>
-                  <button className='buttonSubimt' type="submit" disabled={isSubmitting} >Submit</button>
-                </div>
+          <>
+            {loading ? (
+              <Spin size='large' />
+            ) : (
+              <div className='container-login'>
+                <Form className='formm'>
+                  <div className='form-container'>
+                    <div className='input-box'>
+                      <Field type="text" placeholder='Name' name="name" className='inputForm' />
+                      <ErrorMessage name="name" component="div" style={{ color: 'red', fontSize: '15px', }} />
+                    </div>
+                    <div className='input-box'>
+                      <Field type="email" placeholder='Email' name="email" className='inputForm' />
+                      <ErrorMessage name="email" component="div" style={{ color: 'red', fontSize: '15px' }} />
+                    </div>
+                    <div className='input-box'>
+                      <Field type="text" placeholder='Phone' name="phone" className='inputForm' />
+                      <ErrorMessage name="phone" component="div" style={{ color: 'red', fontSize: '15px', }} />
+                    </div>
+                    <div className='buttonDiv'>
+                      <button className='buttonSubimt' type="submit" disabled={isSubmitting} >Submit</button>
+                    </div>
+                  </div>
+                </Form>
               </div>
-            </Form>
-          </div>
+            )}
+          </>
         )}
-      </Formik >
+      </Formik>
+
     </>
   );
 };
