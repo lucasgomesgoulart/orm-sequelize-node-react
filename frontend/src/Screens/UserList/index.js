@@ -6,11 +6,8 @@ import { format } from 'date-fns'
 import './styles.css'
 import ModalUser from '../ModalUser'
 import Swal from 'sweetalert2'
-import { Context } from '../../components/Context/AuthContext'
-
 
 const UserList = () => {
-  const { countUsersDeleted, setCountUsersDeleted } = useContext(Context)
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -89,6 +86,10 @@ const UserList = () => {
     setRecord(record)
   }
 
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
+
   const deleteUser = async (record) => {
     Modal.confirm({
       title: 'This action is irreversible',
@@ -106,8 +107,9 @@ const UserList = () => {
             title: `${record.name} deleted!`
           })
           setLoading(false)
-          setCountUsersDeleted(countUsersDeleted + 1)
+          closeModal()
           findAllUsers()
+
         }
       }
     })
@@ -137,38 +139,42 @@ const UserList = () => {
 
 
   return (
-    <div>
-      <input
-        style={{
-          display: 'flex',
-          padding: '5px',
-          borderRadius: '5px',
-          border: '1px solid',
-          outline: 'none',
-        }}
-        placeholder='Find user by name'
-        value={filterInput}
-        onChange={(e) => {
-          const text = e.target.value
-          setFilterInput(text)
-          setDataSource(text ? dataSource.filter(item => item.name.includes(text)) : findAllUsers())
-        }}
-      />
+    <>
       {loading ? (
-        <Spin size='large' />
+        <div>
+          <Spin size='large' />
+        </div>
       ) : (
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          rowKey={record => record.id}
-          rowClassName={(record, index) => index % 2 === 0 ? 'even-row' : 'odd-row'}
-        >
-        </Table>
+        <div style={{ alignItems: 'center' }}>
+          <input
+            style={{
+              padding: '8px 16px',
+              borderRadius: 4,
+              border: '1px solid #d9d9d9',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+              outline: 'none',
+              width: '100%',
+              marginBottom: '20px',
+            }}
+            placeholder='Find user by name'
+            value={filterInput}
+            onChange={(e) => {
+              const text = e.target.value
+              setFilterInput(text)
+              setDataSource(text ? dataSource.filter(item => item.name.includes(text)) : findAllUsers())
+            }}
+          />
+          <Table
+            columns={columns}
+            dataSource={dataSource}
+            rowKey={record => record.id}
+            rowClassName={(record, index) => index % 2 === 0 ? 'even-row' : 'odd-row'}
+          />
+        </div>
       )}
       <ModalUser value={isModalOpen} set={setIsModalOpen} record={record} findAllUsers={findAllUsers} />
-    </div>
+    </>
   )
 }
-
 
 export default UserList
