@@ -3,15 +3,15 @@ module.exports = {
     username: "root",
     password: process.env.DB_PASSWORD,
     database: "railway",
-    host: "containers-us-west-148.railway.app",
+    host: "containers-us-west-134.railway.app",
     dialect: "mysql",
-    port: 5506
+    port: 7338
   },
   production: {
     username: "root",
     password: process.env.DB_PASSWORD,
     database: "railway",
-    host: "containers-us-west-148.railway.app",
+    host: "containers-us-west-134.railway.app",
     dialect: "mysql"
   }
 };

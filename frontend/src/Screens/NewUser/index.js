@@ -6,18 +6,41 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../components/Context/AuthContext'
 import { useContext, useEffect, useState } from 'react';
+import logo from '../TelaLogin/assets/logo-circular.png'
 
 const NewUser = () => {
 
   const { authenticated } = useContext(Context)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+
+
   useEffect(() => {
     if (!authenticated) {
       navigate('/unauthorizaded')
     }
-  }, [])
+  }, [authenticated, navigate])
 
+  const validateUser = async (values, { setSubmitting, resetForm }) => {
+    setLoading(true)
+    try {
+      await api.post('/users', {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        adm_user: false,
+        active: true,
+      })
+      navigate('/listusers')
+      resetForm()
+    } catch (error) {
+      if (error.request.status === 401 || error.request.status === 403) {
+        toast.error(<div>You need to login first</div>)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -28,6 +51,8 @@ const NewUser = () => {
       }}>
         Register User
       </h1>
+      {loading ? null : <img src={logo} alt="logo" style={{ width: '150px' }} />}
+
       <Formik
         initialValues={{ name: '', email: '', phone: '' }}
         validationSchema={Yup.object({
@@ -35,37 +60,14 @@ const NewUser = () => {
           email: Yup.string().email('Invalid email address').required('Required'),
           phone: Yup.string().required('Required')
         })}
-
-        onSubmit={async (values, { setSubmitting, resetForm, }) => {
-          try {
-            setLoading(true)
-            await api.post('/users', {
-              name: values.name,
-              email: values.email,
-              phone: values.phone,
-              adm_user: false,
-              active: true,
-            })
-            navigate('/listusers')
-            resetForm({})
-            setSubmitting(false)
-            setLoading(false)
-            
-          } catch (error) {
-            if (error.request.status === 401 || error.request.status === 403) {
-              toast.error(<div>You need to login first</div>)
-            }
-          }
-          setLoading(false)
-        }}
+        onSubmit={validateUser}
       >
-        {({ isSubmitting, errors }) => (
-
+        {({ isSubmitting }) => (
           <>
             {loading ? (
               <Spin size='large' />
             ) : (
-              <div className='container-login'>
+              <div className='container-geral'>
                 <Form className='formm'>
                   <div className='form-container'>
                     <div className='input-box'>
@@ -90,7 +92,6 @@ const NewUser = () => {
           </>
         )}
       </Formik>
-
     </>
   );
 };

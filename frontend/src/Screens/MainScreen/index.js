@@ -21,9 +21,9 @@ const MainScreen = () => {
                     api.get('/getCountDeletedUsers').then(res => res.data),
                 ]);
                 setData({
-                    user: adminFound.admin_username,
+                    user: adminFound.adminFound.admin_username,
                     countUsers: users.length,
-                    lastUser: users.lenght > 0 ? users[users.length - 1].name : null,
+                    lastUser: users.length > 0 ? users[users.length - 1].name : null,
                     deletedUser: countDeletedUsers.countUsersDeleted,
                 });
                 setLoading(false);
@@ -92,7 +92,7 @@ const MainScreen = () => {
                                         <span>
                                             {' '}
                                         </span>
-                                        {data.lastUser ? data.lastUser : '0'}
+                                        {data.lastUser ? data.lastUser : '...'}
                                     </span>
                                 </>
                             )

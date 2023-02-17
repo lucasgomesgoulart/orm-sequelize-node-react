@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Spin } from 'antd';
 import { Context } from '../../components/Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-
+import './styles.scss'
 const Reports = () => {
 
   const { authenticated } = useContext(Context)
@@ -13,14 +13,14 @@ const Reports = () => {
   const [finalDate, setFinalDate] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
-  
+
 
   useEffect(() => {
-    if(!authenticated){
+    if (!authenticated) {
       navigate('/unauthorizaded')
     }
   }, [])
-  
+
 
   const downloadReport = () => {
     setLoading(true);
@@ -45,20 +45,22 @@ const Reports = () => {
 
   return (
     <>
-        <div>
-          <h1>Reports</h1>
-          <Space direction="vertical" size={12}>
-            <RangePicker onChange={(dates) => {
-              setInitalDate(dates[0]);
-              setFinalDate(dates[1]);
-            }} />
-          </Space>
-          {loading ? (
-            <Spin size="large" />
-          ) : (
-            <button onClick={downloadReport}>Download report</button>
-          )}
-        </div>
+      <div>
+        <h1 className="title">Reports</h1>
+        <Space direction="vertical" size={12}>
+          <RangePicker onChange={(dates) => {
+            setInitalDate(dates[0]);
+            setFinalDate(dates[1]);
+          }} />
+        </Space>
+        {loading ? (
+          <Spin size="large" />
+        ) : (
+          <div>
+            <button className="buttonSubimt" onClick={downloadReport}>Download report</button>
+          </div>
+        )}
+      </div>
     </>
   );
 }
